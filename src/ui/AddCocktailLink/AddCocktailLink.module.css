@@ -1,0 +1,19 @@
+.add_link {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 40px;
+    aspect-ratio: 1;
+    background-color: var(--primary);
+    border: solid 1px var(--border-color);
+    border-radius: .8rem;
+}
+
+.add_link::after {
+    content: '+';
+    position: relative;
+    font-weight: bold;
+    top: -.1rem;
+    transform: scale(2);
+}
