@@ -1,4 +1,4 @@
-export const routesLinks = {
-    home: '/',
-    newCocktail: '/new_cocktail'
+export enum routesLinks  {
+    home = '/',
+    newCocktail = '/new_cocktail'
 }
