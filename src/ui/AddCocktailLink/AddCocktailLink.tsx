@@ -5,7 +5,7 @@ import { routesLinks } from "../../config";
 export const AddNewCocktailLink = () => {
   return (
     <Link to={routesLinks.newCocktail}>
-      <div className={`${styles.add_link} shadow`} />
+      <div className={styles.add_link} />
     </Link>
   );
 };

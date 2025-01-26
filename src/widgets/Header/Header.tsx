@@ -7,12 +7,16 @@ import { routesLinks } from "../../config";
 
 export const Header = () => {
   return (
-    <header className={`${styles.header} container shadow`}>
-      <Link to={routesLinks.home}>
-        <Logo />
-      </Link>
-      <Search />
-      <AddNewCocktailLink />
+    <header className={`${styles.header} shadow`}>
+      <div className={`${styles.header_inner} container`}>
+        <Link to={routesLinks.home}>
+          <Logo />
+        </Link>
+        <section className={styles.header_search_block}>
+          <Search />
+          <AddNewCocktailLink />
+        </section>
+      </div>
     </header>
   );
 };

@@ -8,6 +8,7 @@
     background-color: var(--primary);
     border: solid 1px var(--border-color);
     border-radius: .8rem;
+    margin-left: 1rem;
 }
 
 .add_link::after {

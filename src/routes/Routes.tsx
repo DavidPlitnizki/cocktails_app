@@ -7,7 +7,7 @@ export const RoutesConfig = () => {
   return (
     <Routes>
       <Route index element={<Main />} />
-      <Route path=":id" element={<CocktailDetails />} />
+      <Route path="/details/:id" element={<CocktailDetails />} />
       <Route path="/new_cocktail" element={<NewCocktail />} />
     </Routes>
   );
