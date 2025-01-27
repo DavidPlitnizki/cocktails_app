@@ -1,0 +1,9 @@
+.loading {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.message {
+    color: var(--color-error);
+}
