@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { Details } from "../../ui/Details";
 
 export const CocktailDetails = () => {
   const [details, setDetails] = useState();
@@ -12,12 +13,12 @@ export const CocktailDetails = () => {
       );
       if (response.ok) {
         const data = await response.json();
-        setDetails(data);
+        setDetails(data.drinks);
       }
     };
     getCocktailDetails();
   }, [id]);
-  console.log(id);
-  console.log(details);
-  return <div>CocktailDetail: {id}</div>;
+  if (!details?.[0]) return null;
+
+  return <Details details={details[0]} />;
 };
