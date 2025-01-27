@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Details } from "../../ui/Details";
+import { Details } from "../../ui/Details/Details";
 
 export const CocktailDetails = () => {
   const [details, setDetails] = useState();
