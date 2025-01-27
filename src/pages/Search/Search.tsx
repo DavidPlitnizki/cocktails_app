@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { Card } from "../../ui/Card/Card";
 import { List } from "../../ui/List/List";
-import { fetchAlcoholicCocktails } from "../../api/ServiceApi";
-import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { useSearchContext } from "../../context/SearchContext";
+import { fetchCocktailsByName } from "../../api/ServiceApi";
 
 type CocktailType = {
   strDrink: string;
@@ -10,16 +11,17 @@ type CocktailType = {
   idDrink: string;
 };
 
-export const Main = () => {
+export const Search = () => {
   const [data, setData] = useState<CocktailType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState("");
+  const { searchValue } = useSearchContext();
 
   useEffect(() => {
     const getData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetchAlcoholicCocktails();
+        const response = await fetchCocktailsByName(searchValue);
         console.log(response);
         if (response.status === 200) {
           if ("drinks" in response.data) {
@@ -44,23 +46,21 @@ export const Main = () => {
       }
     };
     getData();
-  }, []);
+  }, [searchValue]);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>{isError}</p>;
 
   return (
-    <main>
-      <List>
-        {data?.map((item) => (
-          <Card
-            key={item.idDrink}
-            id={item.idDrink}
-            title={item.strDrink}
-            imgSrc={item.strDrinkThumb}
-          />
-        ))}
-      </List>
-    </main>
+    <List>
+      {data?.map((item) => (
+        <Card
+          key={item.idDrink}
+          id={item.idDrink}
+          title={item.strDrink}
+          imgSrc={item.strDrinkThumb}
+        />
+      ))}
+    </List>
   );
 };

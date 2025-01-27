@@ -5,5 +5,5 @@ export const fetchAlcoholicCocktails = () => {
 };
 
 export const fetchCocktailsByName = (name: string) => {
-    return apiClient.get(`/filter.php?s=${name}`);
+    return apiClient.get(`/search.php?s=${name}`);
 };
