@@ -21,6 +21,9 @@ npm install
 npm run dev
 ```
 
+Open in browser 
+http://localhost:5173/
+
 Project Structure
 src/        
 ├── api/          
