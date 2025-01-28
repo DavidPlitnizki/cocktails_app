@@ -1,8 +1,8 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import styles from "./AddNewCocktail.module.css";
 import { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import useLocalStorage from "../../hooks/useLocalStorage";
-import { CombinedCocktailType, newCockTailInputs } from "../../types";
+import { CockTailDetailsType } from "../../types";
+import styles from "./AddNewCocktail.module.css";
 
 export const AddNewCocktail = () => {
   const [isDisabled, setDisabled] = useState(false);
@@ -11,8 +11,9 @@ export const AddNewCocktail = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<CombinedCocktailType>();
+  } = useForm<CockTailDetailsType>();
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -27,23 +28,26 @@ export const AddNewCocktail = () => {
 
   const onSuccess = () => {
     setDisabled(false);
+    reset();
   };
   const onError = () => {
     setDisabled(false);
   };
 
-  const onSubmit: SubmitHandler<newCockTailInputs> = (data) => {
+  const onSubmit: SubmitHandler<CockTailDetailsType> = (data) => {
     setDisabled(true);
     const newCocktail = {
       ...data,
       strDrinkThumb: base64,
       idDrink: crypto.randomUUID(),
     };
-    storeCocktail({
-      cocktail: newCocktail,
-      successFn: onSuccess,
-      failedFn: onError,
-    });
+    setTimeout(() => {
+      storeCocktail({
+        cocktail: newCocktail,
+        successFn: onSuccess,
+        failedFn: onError,
+      });
+    }, 1000);
   };
 
   return (

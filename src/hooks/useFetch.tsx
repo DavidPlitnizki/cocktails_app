@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useState } from "react";
+import { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { CocktailType } from "../types";
-import { AxiosResponse } from "axios";
 
 interface IProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   requestFn: () => Promise<AxiosResponse<any, any>>;
 }
 
@@ -13,19 +13,31 @@ export const useFetch = ({ requestFn }: IProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
+  const validationResponse = (response: AxiosResponse<any, any>) => {
+    if (typeof response.data === "object" && response.data !== null) {
+      if ("drinks" in response.data) {
+        if (Array.isArray(response.data.drinks)) {
+          setData(response.data.drinks);
+        } else {
+          setData([]);
+        }
+      } else {
+        setData([]);
+      }
+    } else if (response.data === "") {
+      setData([]);
+    } else {
+      throw new Error("Unexpected response");
+    }
+  };
+
   const getData = useCallback(async () => {
     try {
       setIsLoading(true);
       setErrorMsg("");
       const response = await requestFn();
       if (response.status === 200) {
-        if ("drinks" in response.data && Array.isArray(response.data.drinks)) {
-          setData(response.data.drinks);
-        } else if ("drinks" in response.data) {
-          setData([]);
-        } else {
-          throw new Error(response.data.drinks);
-        }
+        validationResponse(response);
       } else {
         throw new Error(response.statusText);
       }

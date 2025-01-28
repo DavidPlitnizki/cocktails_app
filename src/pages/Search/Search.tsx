@@ -8,6 +8,7 @@ import { Loading } from "../../ui/Loading/Loading";
 import { ErrorMsg } from "../../ui/ErrorMsg/ErrorMsg";
 import fallbackImgSrc from "../../assets/fallback.png";
 import useLocalStorage from "../../hooks/useLocalStorage";
+import { NoData } from "../../ui/NoData/NoData";
 
 export const Search = () => {
   const { searchValue } = useSearchContext();
@@ -28,12 +29,18 @@ export const Search = () => {
     getData();
   }, [getData]);
 
+  const mergedData = useMemo(
+    () => [...data, ...filetedCOcktails],
+    [data, filetedCOcktails]
+  );
+
   if (isLoading) return <Loading />;
   if (errorMsg) return <ErrorMsg msg={errorMsg} />;
+  if (!mergedData.length) return <NoData />;
 
   return (
     <List>
-      {data?.map((item) => (
+      {mergedData?.map((item) => (
         <Card
           key={item.idDrink}
           id={item.idDrink}

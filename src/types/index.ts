@@ -4,10 +4,11 @@ export type CocktailType = {
     idDrink: string;
   };
 
-  export type newCockTailInputs = {
+  export type CockTailDetailsType = {
+    strDrink: string;
+    strDrinkThumb: string;
+    idDrink: string;
     strCategory: string;
     strInstructions: string;
     strIngredient1: string;
   };
-
-  export type CombinedCocktailType = CocktailType & newCockTailInputs;

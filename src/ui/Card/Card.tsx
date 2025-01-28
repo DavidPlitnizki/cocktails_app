@@ -1,6 +1,6 @@
 import { Link } from "react-router";
-import styles from "./Card.module.css";
 import { routesLinks } from "../../config";
+import styles from "./Card.module.css";
 
 interface IProps {
   id: string;

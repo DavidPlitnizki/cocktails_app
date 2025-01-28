@@ -1,5 +1,5 @@
-import styles from "./Details.module.css";
 import fallbackImgSrc from "../../assets/fallback.png";
+import styles from "./Details.module.css";
 
 interface IProps {
   details: {
@@ -16,8 +16,8 @@ export const Details = ({ details }: IProps) => {
           <img src={imgSrc} alt="cocktail image" />
         </div>
         <div className={styles.details_info_block}>
-          {Object.entries(details).map(([key, value]) => {
-            return value ? (
+          {Object?.entries(details)?.map(([key, value]) => {
+            return value && key !== "strDrinkThumb" ? (
               <div key={key}>{`${key.replace("str", "")} : ${value}`}</div>
             ) : null;
           })}

@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
-import { useSearchContext } from "../../context/SearchContext";
-import styles from "./Search.module.css";
 import { useLocation, useNavigate } from "react-router";
+import { useSearchContext } from "../../context/SearchContext";
 import { routesLinks } from "../../config";
+import styles from "./Search.module.css";
 
 export const Search = () => {
   const navigate = useNavigate();
@@ -15,7 +15,8 @@ export const Search = () => {
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
       setSearchValue(val);
-      if (pathname !== routesLinks.search) navigate(routesLinks.search);
+      if (pathname !== routesLinks.search && val.length)
+        navigate(routesLinks.search);
     }, 500);
   };
 

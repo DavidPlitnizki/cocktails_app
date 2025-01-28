@@ -1,9 +1,10 @@
 import { useCallback, useState } from "react";
-import { CombinedCocktailType, newCockTailInputs } from "../types";
 import { toast } from "react-toastify";
+import { CockTailDetailsType, CocktailType,  } from "../types";
 
-interface storeCocktail {
-    cocktail: newCockTailInputs,
+
+type StoreCocktailType = {
+    cocktail: CockTailDetailsType,
     successFn?: () => void,
     failedFn?: () => void
 }
@@ -11,40 +12,44 @@ interface storeCocktail {
 const KEY_STORED = 'drinks';
 
 function useLocalStorage(initialValue = []) {
-  const [storedValue, setStoredValue] = useState<Partial<CombinedCocktailType>[]>(() => {
+  const [storedValue, setStoredValue] = useState<(CockTailDetailsType | CocktailType)[]>(() => {
     try {
       const item = localStorage.getItem(KEY_STORED);
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       toast('Error reading from localStorage', {
-        className:'error'}
+        type: "error"}
     )
     console.error(error);
       return initialValue;
     }
   });
 
-  const getFilteredCocktailsByName = useCallback((filter: string) => {
-    return storedValue.filter(cocktail => cocktail.strDrink === filter);
+  const getFilteredCocktailsById = useCallback((id: string) => {
+    return storedValue.filter(cocktail => cocktail.idDrink === id);
   }, [storedValue]);
 
-  const storeCocktail = ({cocktail, successFn, failedFn }: storeCocktail) => {
+  const getFilteredCocktailsByName = useCallback((filter: string) => {
+    return storedValue.filter(cocktail => cocktail.strDrink?.includes(filter));
+  }, [storedValue]);
+
+  const storeCocktail = ({cocktail, successFn, failedFn }: StoreCocktailType) => {
     try {
       setStoredValue(prev => [...prev, cocktail]);
       localStorage.setItem(KEY_STORED, JSON.stringify([...storedValue, cocktail]));
       toast('Success writing to localStorage', {
-        className:'success'})
+        type: "success"})
         successFn?.();
     } catch (error) {
         toast('Error writing to localStorage', {
-            className:'error'}
+          type: "error"}
         )
         failedFn?.();
         console.error(error);
     }
   };
 
-  return {storedValue, storeCocktail, getFilteredCocktailsByName} as const;
+  return {storedValue, storeCocktail, getFilteredCocktailsByName, getFilteredCocktailsById} as const;
 }
 
 export default useLocalStorage;

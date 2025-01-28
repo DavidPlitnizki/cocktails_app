@@ -1,6 +1,6 @@
 import { Link } from "react-router";
-import styles from "./AddCocktailLink.module.css";
 import { routesLinks } from "../../config";
+import styles from "./AddCocktailLink.module.css";
 
 export const AddNewCocktailLink = () => {
   return (
