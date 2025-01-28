@@ -5,6 +5,7 @@ import { useFetch } from "../../hooks/useFetch";
 import { fetchAlcoholicCocktails } from "../../api/ServiceApi";
 import { Loading } from "../../ui/Loading/Loading";
 import { ErrorMsg } from "../../ui/ErrorMsg/ErrorMsg";
+import fallbackImgSrc from "../../assets/fallback.png";
 
 export const Main = () => {
   const { data, errorMsg, isLoading, getData } = useFetch({
@@ -26,7 +27,7 @@ export const Main = () => {
             key={item.idDrink}
             id={item.idDrink}
             title={item.strDrink}
-            imgSrc={item.strDrinkThumb}
+            imgSrc={item.strDrinkThumb ?? fallbackImgSrc}
           />
         ))}
       </List>

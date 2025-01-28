@@ -1,11 +1,14 @@
 import styles from "./Details.module.css";
+import fallbackImgSrc from "../../assets/fallback.png";
 
 interface IProps {
-  [key: string]: string;
+  details: {
+    [key: string]: string;
+  };
 }
 
 export const Details = ({ details }: IProps) => {
-  const imgSrc = details?.["strDrinkThumb"];
+  const imgSrc = details?.["strDrinkThumb"] ?? fallbackImgSrc;
   return (
     <div className={styles.details}>
       <div className={`${styles.details_content} shadow`}>

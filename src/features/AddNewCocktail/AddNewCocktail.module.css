@@ -1,0 +1,48 @@
+.form_block {
+    display: flex;
+    flex-direction: column;
+    width: 30rem;
+    max-width: calc(100vw - 4rem);
+    border: 1px solid;
+    padding: 1rem;
+    border-radius: .5rem;
+
+    label {
+        font-weight: bold;
+        margin-top: .5rem;
+    }
+    input {
+        padding: .8rem;
+        border-radius: .5rem;
+        font-size: 1.2rem;
+    }
+
+    .submit {
+        width: 50%;
+        background-color: var(--fg);
+        color: #fff;
+        font-weight: bold;
+        align-self: flex-end;
+        margin-block: 1rem;
+    }
+
+    .submit:hover { 
+        cursor: pointer;
+    }
+
+    .submit:disabled {
+        cursor: not-allowed;
+        background-color: gray;
+    }
+
+    .submit:active:not:disabled { 
+        transform: scale(.9);
+        transition: transform .3 linear;
+    }
+
+    .error {
+        color: var( --color-error);
+        font-weight: 600;
+    }
+
+}

@@ -1,14 +1,21 @@
 import { Card } from "../../ui/Card/Card";
 import { List } from "../../ui/List/List";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useSearchContext } from "../../context/SearchContext";
 import { fetchCocktailsByName } from "../../api/ServiceApi";
 import { useFetch } from "../../hooks/useFetch";
 import { Loading } from "../../ui/Loading/Loading";
 import { ErrorMsg } from "../../ui/ErrorMsg/ErrorMsg";
+import fallbackImgSrc from "../../assets/fallback.png";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 export const Search = () => {
   const { searchValue } = useSearchContext();
+  const { getFilteredCocktailsByName } = useLocalStorage();
+  const filetedCOcktails = useMemo(
+    () => getFilteredCocktailsByName(searchValue),
+    [getFilteredCocktailsByName, searchValue]
+  );
   const memorizedFn = useCallback(
     () => fetchCocktailsByName(searchValue),
     [searchValue]
@@ -31,7 +38,7 @@ export const Search = () => {
           key={item.idDrink}
           id={item.idDrink}
           title={item.strDrink}
-          imgSrc={item.strDrinkThumb}
+          imgSrc={item.strDrinkThumb ?? fallbackImgSrc}
         />
       ))}
     </List>

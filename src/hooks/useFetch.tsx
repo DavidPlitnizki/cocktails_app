@@ -16,10 +16,13 @@ export const useFetch = ({ requestFn }: IProps) => {
   const getData = useCallback(async () => {
     try {
       setIsLoading(true);
+      setErrorMsg("");
       const response = await requestFn();
       if (response.status === 200) {
         if ("drinks" in response.data && Array.isArray(response.data.drinks)) {
           setData(response.data.drinks);
+        } else if ("drinks" in response.data) {
+          setData([]);
         } else {
           throw new Error(response.data.drinks);
         }
@@ -40,5 +43,5 @@ export const useFetch = ({ requestFn }: IProps) => {
     }
   }, [requestFn]);
 
-  return { data, errorMsg, isLoading, getData };
+  return { data, errorMsg, isLoading, getData } as const;
 };
