@@ -1,39 +1,42 @@
-import { useEffect, useState } from "react";
-import { Card } from "../../ui/Card";
-import { List } from "../../ui/List";
-
-type CocktailType = {
-  strDrink: string;
-  strDrinkThumb: string;
-  idDrink: string;
-};
+import { useEffect, useMemo } from "react";
+import { useFetch } from "../../hooks/useFetch";
+import { fetchAlcoholicCocktails } from "../../api/ServiceApi";
+import { Card } from "../../ui/Card/Card";
+import { List } from "../../ui/List/List";
+import { Loading } from "../../ui/Loading/Loading";
+import { ErrorMsg } from "../../ui/ErrorMsg/ErrorMsg";
+import { NoData } from "../../ui/NoData/NoData";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import fallbackImgSrc from "../../assets/fallback.png";
 
 export const Main = () => {
-  const [data, setData] = useState<CocktailType[]>([]);
-  useEffect(() => {
-    const getData = async () => {
-      const response = await fetch(
-        "https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic"
-      );
-      if (response.ok) {
-        const data = await response.json();
-        setData(data.drinks);
-      }
-    };
-    getData();
-  }, []);
+  const { storedValue } = useLocalStorage();
+  const { data, errorMsg, isLoading, getData } = useFetch({
+    requestFn: fetchAlcoholicCocktails,
+  });
 
-  console.log("data: ", data);
+  useEffect(() => {
+    getData();
+  }, [getData]);
+
+  const mergedData = useMemo(
+    () => [...data, ...storedValue],
+    [data, storedValue]
+  );
+
+  if (isLoading) return <Loading />;
+  if (errorMsg) return <ErrorMsg msg={errorMsg} />;
+  if (!mergedData.length) return <NoData />;
 
   return (
     <main>
       <List>
-        {data?.map((item) => (
+        {mergedData?.map((item) => (
           <Card
             key={item.idDrink}
             id={item.idDrink}
             title={item.strDrink}
-            imgSrc={item.strDrinkThumb}
+            imgSrc={item.strDrinkThumb ?? fallbackImgSrc}
           />
         ))}
       </List>

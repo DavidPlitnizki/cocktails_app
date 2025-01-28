@@ -1,23 +1,37 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useParams } from "react-router";
+import { Details } from "../../ui/Details/Details";
+import { useFetch } from "../../hooks/useFetch";
+import { getCocktailDetails } from "../../api/ServiceApi";
+import { Loading } from "../../ui/Loading/Loading";
+import { ErrorMsg } from "../../ui/ErrorMsg/ErrorMsg";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import { NoData } from "../../ui/NoData/NoData";
 
 export const CocktailDetails = () => {
-  const [details, setDetails] = useState();
-  const { id } = useParams();
+  const { id = "" } = useParams();
+  const { getFilteredCocktailsById } = useLocalStorage();
+  const memorizedGetCocktailsFn = useCallback(
+    () => getCocktailDetails(id),
+    [id]
+  );
+  const localStoredCocktails = getFilteredCocktailsById(id);
+  const { data, errorMsg, isLoading, getData } = useFetch({
+    requestFn: memorizedGetCocktailsFn,
+  });
 
   useEffect(() => {
-    const getCocktailDetails = async () => {
-      const response = await fetch(
-        `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`
-      );
-      if (response.ok) {
-        const data = await response.json();
-        setDetails(data);
-      }
-    };
-    getCocktailDetails();
-  }, [id]);
-  console.log(id);
-  console.log(details);
-  return <div>CocktailDetail: {id}</div>;
+    getData();
+  }, [getData]);
+
+  const mergedData = useMemo(
+    () => [...data, ...localStoredCocktails],
+    [data, localStoredCocktails]
+  );
+
+  if (isLoading) return <Loading />;
+  if (errorMsg) return <ErrorMsg msg={errorMsg} />;
+  if (!mergedData.length) return <NoData />;
+
+  return mergedData[0] ? <Details details={mergedData[0]} /> : null;
 };

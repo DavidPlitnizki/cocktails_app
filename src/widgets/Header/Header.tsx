@@ -1,9 +1,9 @@
 import { Link } from "react-router";
-import { AddNewCocktailLink } from "../../ui/AddCocktailLink";
-import { Logo } from "../../ui/Logo";
-import { Search } from "../../ui/Search";
-import styles from "./Header.module.css";
+import { AddNewCocktailLink } from "../../ui/AddCocktailLink/AddCocktailLink";
+import { Logo } from "../../ui/Logo/Logo";
+import { Search } from "../../features/Search/Search";
 import { routesLinks } from "../../config";
+import styles from "./Header.module.css";
 
 export const Header = () => {
   return (
