@@ -22,15 +22,15 @@ npm run dev
 ```
 
 Project Structure
-src/
+src/      
 ├── api/          
 ├── assets/   
 ├── config/        
 ├── context       
 ├── features      
 ├── hooks     
-├── pages
-├── routes
-├── types
-├── ui
-└── widgets
+├── pages     
+├── routes    
+├── types     
+├── ui      
+└── widgets     
